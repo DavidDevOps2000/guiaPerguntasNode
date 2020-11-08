@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');/* Ele serve para vc pegar os dados decodificados */
-const sequelize = require('sequelize');
 const connection = require('./database/database');
 const Pergunta = require('./database/Pergunta');
 const Resposta = require('./database/Resposta');
@@ -39,7 +38,7 @@ app.get('/', (req, res)=>{
 });
 
 app.get('/perguntar',(req, res)=>{
-    res.render('perguntar');
+    res.render('perguntar'); 
 });
 
 app.post('/salvarpergunta', (req, res) =>{//Se no Formulario ha um methodo POST para pergarmos is valorres de lá temos que usa o POST tbm
@@ -59,14 +58,23 @@ app.get("/pergunta/:id", (req, res)=>{
     var id = req.params.id;
 
     Pergunta.findOne({// findOne faz pesquisas especificas usando CONDICIONAIS como o where
+        
         where:{id:id}
-    }).then( perguntas => {//pegaremos o resultado da tabela pergunta e usaremos o args 'args'
 
-        if(perguntas != undefined){ // verificaremos se a tabela trouxe alguma coisa valida para levar a outra página
+    }).then( pergunta => {//pegaremos o resultado da tabela pergunta e usaremos o args 'args'
+
+        if(pergunta != undefined){ // verificaremos se a tabela trouxe alguma coisa valida para levar a outra página
                                     //Se a codição der verdadeira ela levara a pagina em questão
-            res.render('pergunta',{
-                perguntas:perguntas
-             });
+
+            Resposta.findAll({
+                where:{perguntaId:pergunta.id},
+                order:[['id','DESC']]
+                }).then(respostas =>{
+                res.render("pergunta",{
+                    pergunta:pergunta,
+                    respostas:respostas
+                });
+            });                                    
 
         }else{// caso contrario
             res.redirect('/');//Aqui redirecionamos
@@ -74,6 +82,17 @@ app.get("/pergunta/:id", (req, res)=>{
     })
 });
 
+app.post('/responder', (req, res)=>{
+
+    var corpo = req.body.corpo;
+    var perguntaId = req.body.pergunta;
+    Resposta.create({
+        corpo:corpo,
+        perguntaId:perguntaId
+    }).then(()=>{
+        res.redirect("/pergunta/"+perguntaId)
+    })
+})
 
 
 app.listen(8888,(erro) =>{
