@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');/* Ele serve para vc pegar os dados de
 const sequelize = require('sequelize');
 const connection = require('./database/database');
 const Pergunta = require('./database/Pergunta');
+const Resposta = require('./database/Resposta');
 
 connection
     .authenticate()//Aqui ele Tentar logar
@@ -35,6 +36,10 @@ app.get('/', (req, res)=>{
             perguntas:perguntas, //estou jogando os dados de perguntas trazidas como [] para perguntas
         });
     });
+});
+
+app.get('/perguntar',(req, res)=>{
+    res.render('perguntar');
 });
 
 app.post('/salvarpergunta', (req, res) =>{//Se no Formulario ha um methodo POST para pergarmos is valorres de lá temos que usa o POST tbm
