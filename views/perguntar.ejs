@@ -1,0 +1,20 @@
+<body>
+<%- include ('partials/header.ejs') %><!--//PAra importar os partials mostrar aqui-->
+<div class="container" >
+    <div class="card"  id="formulario-perguntas"><!--//Recurso Card-->
+        <div class="card-header"><h1>Realizar pergunta</h1><hr></div>
+        <div class="card-body">
+            <form method="POST" action="/salvarpergunta">
+                <label>Titulo</label>
+                <input class="form-control" type="text" placeholder="Faça a sua pergunta" name='nameTitulo'>
+                <br>
+                <label>Escreva a sua resposta</label>
+                <textarea class="form-control" name='nameDescricao'> </textarea>
+                <br>
+                <button class="btn btn-primary">perguntar</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<%- include('partials/footer.ejs') %><!--//PAra importar os partials mostrar aqui-->

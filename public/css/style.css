@@ -1,8 +1,10 @@
 h1{
     color: blue;
 }
+#formulario-perguntas{
+    margin: 5vh;
+}
 
-img{
-    height: 300px;
-    width: 300px;
+body{
+    background-color: #eceff1;
 }
